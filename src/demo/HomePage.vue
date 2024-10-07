@@ -16,11 +16,8 @@
           </el-table-column>
           <el-table-column fixed="right" label="Operations" min-width="120">
             <template slot="default" slot-scope="{ row }">
-              <el-button link type="primary" size="small" @click="handleClick(row.id)">
-                View
-              </el-button>
               <el-button link type="info" size="small" @click="handleClick(row.id)">
-                Edit
+                View / Edit
               </el-button>
               <el-button link type="danger" size="small" @click="handleDelete(row.id)">
                 Delete
@@ -48,30 +45,32 @@ export default {
   },
   methods: {
     async fetchTableData() {
-      try {
-        const collections = ['texts'];
-        let allData = [];
+    try {
+      const collections = ['texts'];
+      let allData = [];
 
-        for (const coll of collections) {
-          const querySnapshot = await getDocs(collection(db, coll));
-          const data = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          allData = [...allData, ...data];
-        }
-
-        // Sort the data based on the createdAt timestamp (newest first)
-        allData.sort((a, b) => {
-          return b.createdAt - a.createdAt; // Ensure createdAt is a Date or timestamp
-        });
-
-        this.tableData = allData;
-        console.log(allData);
-      } catch (error) {
-        console.error('Error fetching data from Firestore: ', error);
+      for (const coll of collections) {
+        const querySnapshot = await getDocs(collection(db, coll));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        allData = [...allData, ...data];
       }
-    },
+
+      // Sort the data based on the createdAt timestamp (newest first)
+      allData.sort((a, b) => {
+        // Check if createdAt is defined for both items
+        if (!a.createdAt || !b.createdAt) return 0; // If one of them is undefined, do not change the order
+        return b.createdAt.seconds - a.createdAt.seconds; // Sort in descending order
+      });
+
+      this.tableData = allData;
+      console.log(allData);
+    } catch (error) {
+      console.error('Error fetching data from Firestore: ', error);
+    }
+  },
     formatTimestamp(timestamp) {
       if (!timestamp) return '';
       const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
