@@ -2,9 +2,11 @@
   <div>
     <el-container>
       <el-main>
-      <generate-form v-if="jsonData" :data="jsonData" ref="generateForm">
-      </generate-form>
-    </el-main>
+        <div class="form-prev">
+          <generate-form v-if="jsonData" :data="jsonData" ref="generateForm">
+          </generate-form>
+        </div>
+      </el-main>
     </el-container>
 
   </div>
@@ -57,3 +59,55 @@ export default {
   },
 }
 </script>
+
+<style>
+.form-prev {
+  max-width: 800px;
+  margin: auto;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.form-prev input,
+.form-prev textarea,
+.form-prev .el-slider__button {
+  border-color: #209a93 !important;
+}
+
+.form-prev .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #209a93;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #209a93 !important;
+  border-color: #209a93 !important;
+}
+
+.el-switch.is-checked .el-switch__core {
+  border-color: #209a93 !important;
+  background-color: #209a93 !important;
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+  color: #209a93 !important;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #209a93 !important;
+  background: #209a93 !important;
+}
+
+.form-prev .el-slider__bar {
+  background-color: #209a93;
+}
+
+.el-color-picker__trigger {
+  border-color: #209a93!important;
+}
+
+.form-prev .el-select,
+.form-prev .el-date-editor.el-input {
+  width: 100%;
+}
+</style>

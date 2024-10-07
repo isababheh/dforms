@@ -2,17 +2,21 @@
   <div class="common-layout">
     <el-container>
       <el-main>
-
+        <div style="margin-bottom: 20px">Number of services: {{ tableData.length }}</div>
         <el-row :gutter="20">
-          <el-col :span="6" v-if="previewVisible" v-for="form in tableData" :key="form.id"
-          :data="JSON.parse(form.content)">
-            <el-card class="box-card" >
+          <el-col :span="8" class="my-col" v-if="previewVisible" v-for="form in tableData" :key="form.id"
+            :data="JSON.parse(form.content)">
+            <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span>{{ form.id }}</span>
                 <div>Submit a technical issue</div>
+
+              </div>
+              <div class="text item">
+                <div style="margin-bottom: 10px;">View the form elements and navigate as a user</div>
                 <el-button link type="primary" size="small" @click="handleClick(form.id)">
-                Start service
-              </el-button>
+                  Start service
+                </el-button>
               </div>
             </el-card>
           </el-col>
@@ -106,3 +110,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.my-col {
+  margin-bottom: 20px;
+}
+</style>

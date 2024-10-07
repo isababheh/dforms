@@ -3,7 +3,7 @@
     <el-container>
       <el-main>
         <div style="width: 100%; text-align: right;">
-          <el-button link type="default" style="margin-left: auto;" size="large" @click="handleCreateForm">
+          <el-button link type="default" style="margin-left: auto; margin-bottom: 20px;" size="large" @click="handleCreateForm">
             Create form
           </el-button>
         </div>
