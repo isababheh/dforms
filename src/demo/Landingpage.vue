@@ -1,33 +1,64 @@
 <template>
-  <div>
-  <a @click.prevent="handleClick('admin')" href="#">Admin page</a>
-  <a @click.prevent="handleClick('client')" href="#">Client page</a>
+  <div class="containera">
+    <div class="cards-container">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>Admin Page</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('admin')">Go to Admin
+            page</el-button>
+        </div>
+        <div class="text item">
+          Create the form and set the form elements
+        </div>
+      </el-card>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>Admin Page</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('client')">Go to Client
+            page</el-button>
+        </div>
+        <div class="text item">
+          View the form elements and navigate as a user
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        jsonData: {"list":[{"type":"input","icon":"icon-input","options":{"width":"100%","defaultValue":"","required":false,"dataType":"string","pattern":"","placeholder":"","disabled":false,"maxlength":-1,"showWordLimit":false,"remoteFunc":"func_1703670296000_5958"},"name":"单行文本","key":"1703670296000_5958","model":"text1","rules":[{"type":"string","message":"单行文本格式不正确"}]},{"type":"textarea","icon":"icon-diy-com-textarea","options":{"width":"100%","defaultValue":"","required":false,"disabled":false,"pattern":"","placeholder":"","maxlength":-1,"showWordLimit":false,"remoteFunc":"func_1703670297000_59193"},"name":"多行文本","key":"1703670297000_59193","model":"text2","rules":[]},{"type":"grid","icon":"icon-grid-","columns":[{"span":12,"list":[{"type":"input","icon":"icon-input","options":{"width":"100%","defaultValue":"","required":false,"dataType":"string","pattern":"","placeholder":"","disabled":false,"maxlength":-1,"showWordLimit":false,"remoteFunc":"func_1703670313000_76172"},"name":"单行文本","key":"1703670313000_76172","model":"text3","rules":[{"type":"string","message":"单行文本格式不正确"}]}]},{"span":12,"list":[{"type":"textarea","icon":"icon-diy-com-textarea","options":{"width":"100%","defaultValue":"","required":false,"disabled":false,"pattern":"","placeholder":"","maxlength":-1,"showWordLimit":false,"remoteFunc":"func_1703670319000_99680"},"name":"多行文本","key":"1703670319000_99680","model":"text4","rules":[]}]}],"options":{"gutter":0,"justify":"start","align":"top","remoteFunc":"func_1703670311000_73193"},"name":"栅格布局","key":"1703670311000_73193","model":"grid_1703670311000_73193","rules":[]},{"type":"editor","icon":"icon-fuwenbenkuang","options":{"defaultValue":"","width":"","disabled":false,"remoteFunc":"func_1703670323000_64646"},"name":"编辑器","key":"1703670323000_64646","model":"editor","rules":[]}],"config":{"labelWidth":100,"labelPosition":"right","size":"small"}},
-        editData: {},
-        remoteFuncs: {
-          
-        }
-      }
-    },
-    methods: {
-      handleClick(page) {
-      const lang = this.$route.params.lang || 'en-US';
-      this.$router.push({ path: `/${lang}/${page}`});
-    },
-      handleDisabled () {
-        this.$refs.generateForm.disabled(['text4', 'editor'], true)
-      },
+export default {
+  data() {
+    return {
+      jsonData: { "list": [{ "type": "input", "icon": "icon-input", "options": { "width": "100%", "defaultValue": "", "required": false, "dataType": "string", "pattern": "", "placeholder": "", "disabled": false, "maxlength": -1, "showWordLimit": false, "remoteFunc": "func_1703670296000_5958" }, "name": "单行文本", "key": "1703670296000_5958", "model": "text1", "rules": [{ "type": "string", "message": "单行文本格式不正确" }] }, { "type": "textarea", "icon": "icon-diy-com-textarea", "options": { "width": "100%", "defaultValue": "", "required": false, "disabled": false, "pattern": "", "placeholder": "", "maxlength": -1, "showWordLimit": false, "remoteFunc": "func_1703670297000_59193" }, "name": "多行文本", "key": "1703670297000_59193", "model": "text2", "rules": [] }, { "type": "grid", "icon": "icon-grid-", "columns": [{ "span": 12, "list": [{ "type": "input", "icon": "icon-input", "options": { "width": "100%", "defaultValue": "", "required": false, "dataType": "string", "pattern": "", "placeholder": "", "disabled": false, "maxlength": -1, "showWordLimit": false, "remoteFunc": "func_1703670313000_76172" }, "name": "单行文本", "key": "1703670313000_76172", "model": "text3", "rules": [{ "type": "string", "message": "单行文本格式不正确" }] }] }, { "span": 12, "list": [{ "type": "textarea", "icon": "icon-diy-com-textarea", "options": { "width": "100%", "defaultValue": "", "required": false, "disabled": false, "pattern": "", "placeholder": "", "maxlength": -1, "showWordLimit": false, "remoteFunc": "func_1703670319000_99680" }, "name": "多行文本", "key": "1703670319000_99680", "model": "text4", "rules": [] }] }], "options": { "gutter": 0, "justify": "start", "align": "top", "remoteFunc": "func_1703670311000_73193" }, "name": "栅格布局", "key": "1703670311000_73193", "model": "grid_1703670311000_73193", "rules": [] }, { "type": "editor", "icon": "icon-fuwenbenkuang", "options": { "defaultValue": "", "width": "", "disabled": false, "remoteFunc": "func_1703670323000_64646" }, "name": "编辑器", "key": "1703670323000_64646", "model": "editor", "rules": [] }], "config": { "labelWidth": 100, "labelPosition": "right", "size": "small" } },
+      editData: {},
+      remoteFuncs: {
 
-      handleEnabled () {
-        this.$refs.generateForm.disabled('editor', false)
       }
     }
+  },
+  methods: {
+    handleClick(page) {
+      const lang = this.$route.params.lang || 'en-US';
+      this.$router.push({ path: `/${lang}/${page}` });
+    },
+    handleDisabled() {
+      this.$refs.generateForm.disabled(['text4', 'editor'], true)
+    },
+
+    handleEnabled() {
+      this.$refs.generateForm.disabled('editor', false)
+    }
   }
+}
 </script>
+<style lang="css" scoped>
+.containera {
+  margin: auto;
+  margin-top: 40px;
+  max-width: 900px;
+}
+.cards-container{
+  display: flex;
+  gap: 20px;
+}
+</style>

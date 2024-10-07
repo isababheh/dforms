@@ -17,16 +17,6 @@
             </el-card>
           </el-col>
         </el-row>
-
-
-
-
-
-        <generate-form v-if="previewVisible" v-for="form in tableData" :key="form.id" :data="JSON.parse(form.content)"
-          ref="generateForm">
-        </generate-form>
-
-
       </el-main>
     </el-container>
   </div>

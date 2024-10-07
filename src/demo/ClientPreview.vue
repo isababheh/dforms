@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div>Previw</div>
-
-    <generate-form v-if="jsonData" :data="jsonData" ref="generateForm">
-    </generate-form>
-
+    <el-container>
+      <el-main>
+      <generate-form v-if="jsonData" :data="jsonData" ref="generateForm">
+      </generate-form>
+    </el-main>
+    </el-container>
 
   </div>
 </template>
@@ -28,17 +29,7 @@ export default {
     GenerateForm,
   },
   methods: {
-    handleClick(page) {
-      const lang = this.$route.params.lang || 'en-US';
-      this.$router.push({ path: `/${lang}/${page}` });
-    },
-    handleDisabled() {
-      this.$refs.generateForm.disabled(['text4', 'editor'], true)
-    },
 
-    handleEnabled() {
-      this.$refs.generateForm.disabled('editor', false)
-    }
   },
   async mounted() {
     try {
