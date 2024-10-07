@@ -7,33 +7,33 @@ import HomePage from '../demo/HomePage.vue';
 
 Vue.use(Router);
 
+// Get the language from localStorage or use the browser's default language
 const language = localStorage.getItem('language') || (navigator.language === 'zh-CN' ? 'zh-CN' : 'en-US');
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: `/${language}`
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: HomePage
+      redirect: `/${language}` // Redirect to language-specific route
     },
     {
       path: '/:lang',
-      name: 'lang',
       component: LanguageView,
       children: [
         {
-          path: '', // Corrected from '/' to '' to match the base path of /:lang
+          path: '', // This defines the base path (e.g., /en-US or /zh-CN)
           name: 'index',
           component: HomePage
         },
         {
-          path: 'create-form', // Corrected to relative path, will be /:lang/home
-          name: 'index1',
+          path: 'create-form', // This will now map to /:lang/create-form
+          name: 'createForm',
           component: Home
+        },
+        {
+          path: 'home', // Adding a route for home (e.g., /:lang/home)
+          name: 'home',
+          component: HomePage
         }
       ]
     }

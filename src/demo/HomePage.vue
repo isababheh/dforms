@@ -61,11 +61,13 @@ export default {
       }
     },
     handleCreateForm() {
-      window.location.href = window.location.href + '/create-form';
-    },
-    handleClick(id) {
-      window.location.href = window.location.href + '/create-form?id=' + id;
-    }
+    const lang = this.$route.params.lang || 'en-US'; // Get the current language from the route parameters, default to 'en-US'
+    this.$router.push(`/${lang}/create-form`); // Redirect to the create-form route within the language context
+  },
+  handleClick(id) {
+    const lang = this.$route.params.lang || 'en-US'; // Get the current language from the route parameters, default to 'en-US'
+    this.$router.push({ path: `/${lang}/create-form`, query: { id } }); // Redirect with the id parameter in the query string
+  }
   }
 };
 </script>
