@@ -11,12 +11,12 @@
           <el-table-column prop="id" label="ID" width="600" />
           <el-table-column label="Timestamp" width="400">
             <template slot-scope="{ row }">
-              {{ formatTimestamp(row.timestamp) }}
+              {{ formatTimestamp(row.timestamp) }} <!-- Use timestamp for formatting -->
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="Operations" min-width="120">
             <template slot="default" slot-scope="{ row }">
-              <el-button link type="info" size="small" @click="handleClick(row.id)">
+              <el-button link type="primary" size="small" @click="handleClick(row.id)">
                 View / Edit
               </el-button>
               <el-button link type="danger" size="small" @click="handleDelete(row.id)">
@@ -45,37 +45,33 @@ export default {
   },
   methods: {
     async fetchTableData() {
-    try {
-      const collections = ['texts'];
-      let allData = [];
+      try {
+        const collections = ['texts'];
+        let allData = [];
 
-      for (const coll of collections) {
-        const querySnapshot = await getDocs(collection(db, coll));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        allData = [...allData, ...data];
+        for (const coll of collections) {
+          const querySnapshot = await getDocs(collection(db, coll));
+          const data = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          allData = [...allData, ...data];
+        }
+
+        // Sort the data based on the timestamp field (newest first)
+        this.tableData = allData
+          .filter(item => item.timestamp) // Ensure timestamp exists
+          .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds); // Sort in descending order
+
+        console.log(allData);
+      } catch (error) {
+        console.error('Error fetching data from Firestore: ', error);
       }
-
-      // Sort the data based on the createdAt timestamp (newest first)
-      allData.sort((a, b) => {
-        // Check if createdAt is defined for both items
-        if (!a.createdAt || !b.createdAt) return 0; // If one of them is undefined, do not change the order
-        return b.createdAt.seconds - a.createdAt.seconds; // Sort in descending order
-      });
-
-      this.tableData = allData;
-      console.log(allData);
-    } catch (error) {
-      console.error('Error fetching data from Firestore: ', error);
-    }
-  },
+    },
     formatTimestamp(timestamp) {
       if (!timestamp) return '';
       const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
 
-      // Define an array of month names in English
       const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -85,31 +81,26 @@ export default {
       const month = monthNames[date.getMonth()]; // Get month name
       const year = date.getFullYear(); // Get full year
 
-      // Get hours and minutes
       let hours = date.getHours();
       const minutes = date.getMinutes().toString().padStart(2, '0'); // Format minutes
-
-      // Determine AM/PM suffix
       const ampm = hours >= 12 ? 'PM' : 'AM';
-      // Convert hours to 12-hour format
       hours = hours % 12;
       hours = hours ? hours.toString().padStart(2, '0') : '12'; // Hour '0' should be '12'
 
       return `${day}. ${month} ${year} ${hours}:${minutes} ${ampm}`; // Format as "DD. Month YYYY HH:mm AM/PM"
-    }
-    ,
+    },
     handleCreateForm() {
-      const lang = this.$route.params.lang || 'en-US'; // Get the current language from the route parameters, default to 'en-US'
-      this.$router.push(`/${lang}/create-form`); // Redirect to the create-form route within the language context
+      const lang = this.$route.params.lang || 'en-US';
+      this.$router.push(`/${lang}/create-form`);
     },
     handleClick(id) {
-      const lang = this.$route.params.lang || 'en-US'; // Get the current language from the route parameters, default to 'en-US'
-      this.$router.push({ path: `/${lang}/create-form`, query: { id } }); // Redirect with the id parameter in the query string
+      const lang = this.$route.params.lang || 'en-US';
+      this.$router.push({ path: `/${lang}/create-form`, query: { id } });
     },
     async handleDelete(id) {
       const confirmDelete = confirm('Are you sure you want to delete this item?');
       if (confirmDelete) {
-        this.loading = true; // Set a loading state to show while the delete operation is in progress
+        this.loading = true;
         try {
           const docRef = doc(db, 'texts', id);
           console.log(`Attempting to delete document with ID: ${id}`);
@@ -118,9 +109,9 @@ export default {
           console.log(`Document with ID ${id} deleted successfully`);
         } catch (error) {
           console.error('Error deleting document: ', error);
-          alert('Failed to delete document. Please try again.'); // Notify the user of the error
+          alert('Failed to delete document. Please try again.');
         } finally {
-          this.loading = false; // Reset the loading state
+          this.loading = false;
         }
       }
     },
