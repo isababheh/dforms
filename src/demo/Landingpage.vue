@@ -1,6 +1,7 @@
 <template>
   <div>
-  sad
+  <a @click.prevent="handleClick('admin')" href="#">Admin page</a>
+  <a @click.prevent="handleClick('client')" href="#">Client page</a>
   </div>
 </template>
 
@@ -16,6 +17,10 @@
       }
     },
     methods: {
+      handleClick(page) {
+      const lang = this.$route.params.lang || 'en-US';
+      this.$router.push({ path: `/${lang}/${page}`});
+    },
       handleDisabled () {
         this.$refs.generateForm.disabled(['text4', 'editor'], true)
       },

@@ -20,7 +20,11 @@ export default {
 
   methods: {
     handleHome() {
-      window.location.href = window.location.href.split('/create-form')[0];
+      const lang = this.$route.params.lang || 'en-US';
+      this.$router.push({ path: `/${lang}/`});
+
+      
+      //window.location.href = window.location.href.split('/create-form')[0];
     },
 
     handleCreateForm() {

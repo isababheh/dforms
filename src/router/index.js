@@ -3,7 +3,10 @@ import Router from 'vue-router';
 
 import Home from '../demo/Home.vue';
 import LanguageView from './LanguageView.vue';
-import HomePage from '../demo/HomePage.vue';
+import Admin from '../demo/Admin.vue';
+import Landingpage from '../demo/Landingpage.vue';
+import Clientpage from '../demo/Clientpage.vue';
+import ClientPreview from '../demo/ClientPreview.vue';
 
 Vue.use(Router);
 
@@ -21,9 +24,14 @@ export default new Router({
       component: LanguageView,
       children: [
         {
-          path: '', // This defines the base path (e.g., /en-US or /zh-CN)
+          path: '',
           name: 'index',
-          component: HomePage
+          component: Landingpage
+        },
+        {
+          path: 'admin', // This defines the base path (e.g., /en-US or /zh-CN)
+          name: 'index',
+          component: Admin
         },
         {
           path: 'create-form', // This will now map to /:lang/create-form
@@ -31,10 +39,15 @@ export default new Router({
           component: Home
         },
         {
-          path: 'home', // Adding a route for home (e.g., /:lang/home)
-          name: 'home',
-          component: HomePage
-        }
+          path: 'client', 
+          name: 'Clientpage',
+          component: Clientpage
+        },
+        {
+          path: 'clientpreview', 
+          name: 'Clientpreview',
+          component: ClientPreview
+        },
       ]
     }
   ]
