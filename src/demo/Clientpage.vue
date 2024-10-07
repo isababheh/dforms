@@ -116,8 +116,3 @@ export default {
   },
 };
 </script>
-<style>
-.fm-style {
-  height: auto !important;
-}
-</style>
