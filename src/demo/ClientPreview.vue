@@ -23,27 +23,28 @@
           </generate-form>
           <div v-if="(showOutput && currentStep == stepsLength+1 && showStepsComponents) || (showOutput  && !showStepsComponents)">
               <h1>Form data</h1>
-                    <ul>
-              <li v-for="(value, key) in outputData" :key="key">
-                  <span v-if="Array.isArray(value)">
-                      <ul>
-                          <li v-for="(item, index) in value" :key="index">{{ item }}</li>
-                      </ul>
-                  </span>
-                  <span v-else-if="isImage(value)">
-                      <div>
-                          <strong>Image Object:</strong>
-                          <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;"/>
-                      </div>
-                  </span>
-                  <span v-else>{{ value }}</span>
-              </li>
+                <ul>
+                  <li v-for="(value, key) in outputData" :key="key">
+                    <span>{{ key }}:</span>
+                      <span v-if="Array.isArray(value)">
+                          <ul>
+                              <li v-for="(item, index) in value" :key="index">{{ item }}</li>
+                          </ul>
+                      </span>
+                      <span v-else-if="isImage(value)">
+                          <div>
+                              <strong>Image Object:</strong>
+                              <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;"/>
+                          </div>
+                      </span>
+                      <span v-else>{{ value }}</span>
+                  </li>
           </ul>
           </div>
           <div v-if="showStepsComponents" class="text-right">
             <el-button type="button" size="medium" @click="handleBack($event)" v-if="currentStep !=1 ">Back</el-button>
-            <el-button type="button" size="medium" @click="handleNext($event)" v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ?
-              'Submit' : 'Next' }}</el-button>
+            <el-button type="button" size="medium" @click="handleNext($event)" v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ? 'Review' : 'Next' }}</el-button>
+            <el-button type="button" size="medium" @click="alert('data sent!')" v-if=" currentStep > stepsLength">{{ currentStep > stepsLength ? 'Submit' : '' }}</el-button>
           </div>
           <div v-if="!showStepsComponents">
             <el-button type="button" size="medium" @click="handleSubmit($event)"  v-if="!showOutput">Submit</el-button>
