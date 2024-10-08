@@ -445,7 +445,7 @@ export default {
             // Document exists, update it
             await updateDoc(docRef, {
               content: json, // Update the text data
-              timestamp: new Date() // Optional: Update the current timestamp
+              timestamp: new Date(), // Optional: Update the current timestamp
             });
             this.updatedMessage = true;
             this.messageText = "Service has been updated successfully"
