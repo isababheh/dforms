@@ -2,6 +2,11 @@
   <div>
     <el-container>
       <el-main>
+        <div style="max-width: 800px; margin: auto; margin-bottom: 20px;">
+          <div>Service: {{ jsonData.config.serviceName }}</div>
+          <div style="font-size: 12px; margin-top:6px">{{ jsonData.config.serviceDescription }}</div>
+        </div>
+
         <div class="form-prev">
           <generate-form v-if="jsonData" :data="jsonData" ref="generateForm">
           </generate-form>
