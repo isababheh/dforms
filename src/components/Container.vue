@@ -59,30 +59,36 @@
 
           </el-aside>
           <el-container class="center-container" direction="vertical">
+            <el-alert :title="messageText" type="success" class="fixed" v-if="updatedMessage" show-icon>
+            </el-alert>
             <el-header class="btn-bar" style="height: 45px;">
               <slot name="action">
+
               </slot>
               <el-button type="text" size="medium" icon="el-icon-document" @click="handleSave($event)">Save</el-button>
               <!-- <el-button v-if="upload" type="text" size="medium" icon="el-icon-upload2" @click="handleUpload">{{$t('fm.actions.import')}}</el-button> -->
-              <el-button v-if="clearable" type="text" size="medium" icon="el-icon-delete"
-                @click="handleClear">{{ $t('fm.actions.clear') }}</el-button>
-              <el-button v-if="preview" type="text" size="medium" icon="el-icon-view"
-                @click="handlePreview">{{ $t('fm.actions.preview') }}</el-button>
+              <el-button v-if="clearable" type="text" size="medium" icon="el-icon-delete" @click="handleClear">{{
+                $t('fm.actions.clear') }}</el-button>
+              <el-button v-if="preview" type="text" size="medium" icon="el-icon-view" @click="handlePreview">{{
+                $t('fm.actions.preview') }}</el-button>
               <!-- <el-button v-if="generateJson" type="text" size="medium" icon="el-icon-tickets" @click="handleGenerateJson">{{$t('fm.actions.json')}}</el-button> -->
               <el-button v-if="generateCode" type="text" size="medium" icon="el-icon-document"
-                @click="handleGenerateCode">{{ $t('fm.actions.code') }}</el-button>
+                @click="handleGenerateCode">{{
+                $t('fm.actions.code') }}</el-button>
             </el-header>
             <el-main :class="{ 'widget-empty': widgetForm.list.length == 0 }">
 
               <widget-form v-if="!resetJson" ref="widgetForm" :data="widgetForm"
                 :select.sync="widgetFormSelect"></widget-form>
             </el-main>
+
           </el-container>
 
           <el-aside class="widget-config-container">
             <el-container>
               <el-header height="45px">
-                <div class="config-tab" :class="{ active: configTab == 'widget' }" @click="handleConfigSelect('widget')">
+                <div class="config-tab" :class="{ active: configTab == 'widget' }"
+                  @click="handleConfigSelect('widget')">
                   {{ $t('fm.config.widget.title') }}</div>
                 <div class="config-tab" :class="{ active: configTab == 'form' }" @click="handleConfigSelect('form')">
                   {{ $t('fm.config.form.title') }}</div>
@@ -125,8 +131,8 @@
             <div id="jsoneditor" style="height: 400px;width: 100%;">{{ jsonTemplate }}</div>
 
             <template slot="action">
-              <el-button type="primary" class="json-btn"
-                :data-clipboard-text="jsonCopyValue">{{ $t('fm.actions.copyData') }}</el-button>
+              <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">{{
+                $t('fm.actions.copyData') }}</el-button>
             </template>
           </cus-dialog>
 
@@ -141,6 +147,20 @@
                 <div id="codeeditor" style="height: 500px; width: 100%;">{{ htmlTemplate }}</div>
               </el-tab-pane>
             </el-tabs>
+          </cus-dialog>
+          <cus-dialog :visible="infoVisible" @on-close="infoVisible = false" ref="infoPreview" width="460px" form
+            :action="false">
+            <h1 class="form-info-title">Service Information</h1>
+            <form>
+              <el-input placeholder="Service Name" class="form-group" v-model="ServiceName"></el-input>
+              <span v-if="ServiceNameError" class="error">Please fill the field</span>
+              <el-input placeholder="Service Description" class="form-group" v-model="ServiceDescription"></el-input>
+              <span v-if="ServiceDescriptionError" class="error">Please fill the field</span>
+              <el-button @click="submitInfo" type="primary" size="default" class="form-info-submit">{{
+                $t('fm.actions.save')
+                }}</el-button>
+            </form>
+
           </cus-dialog>
         </el-container>
       </el-main>
@@ -208,6 +228,12 @@ export default {
   },
   data() {
     return {
+      messageText: "",
+      updatedMessage: false,
+      ServiceName: "",
+      ServiceDescription: "",
+      ServiceNameError: false,
+      ServiceDescriptionError: false,
       basicComponents,
       layoutComponents,
       advanceComponents,
@@ -217,14 +243,16 @@ export default {
         config: {
           labelWidth: 100,
           labelPosition: 'right',
-          size: 'small'
+          size: 'small',
         },
+
       },
       configTab: 'widget',
       widgetFormSelect: null,
       previewVisible: false,
       jsonVisible: false,
       codeVisible: false,
+      infoVisible: false,
       uploadVisible: false,
       remoteFuncs: {
         func_test(resolve) {
@@ -366,7 +394,31 @@ export default {
     },
     handleSave(event) {
       event.preventDefault()
+      this.infoVisible = true;
+      return;
+
+    },
+    submitInfo() {
+
+      // Reset errors
+      this.ServiceNameError = false;
+      this.ServiceDescriptionError = false;
+
+      // Check if serviceName or serviceDescription is empty
+      if (!this.ServiceName || !this.ServiceName.trim()) {
+        this.ServiceNameError = true;
+        return;
+      }
+
+      if (!this.ServiceDescription || !this.ServiceDescription.trim()) {
+        this.ServiceDescriptionError = true;
+        return;
+      }
+
+      this.widgetForm.config.serviceName = this.ServiceName;
+      this.widgetForm.config.serviceDescription = this.ServiceDescription;
       let json = JSON.stringify(this.widgetForm)
+      console.log("this.widgetForm", this.widgetForm)
       const id = this.$route.query.id || null;
       const extractedId = id && id.includes('/') ? id.split('/')[0] : id;
       this.storeText(extractedId, json)
@@ -380,7 +432,8 @@ export default {
             content: json, // Store the text data
             timestamp: new Date() // Optional: Store the current timestamp
           });
-          alert('Text stored successfully with ID: ' + docRef.id);
+          this.updatedMessage = true;
+          this.messageText = "Service has been created successfully"
         } else {
           // Reference to the Firestore document with the given ID
           const docRef = doc(db, 'texts', id); // Ensure 'id' is just the document ID
@@ -394,18 +447,25 @@ export default {
               content: json, // Update the text data
               timestamp: new Date() // Optional: Update the current timestamp
             });
-            alert('Text updated successfully');
+            this.updatedMessage = true;
+            this.messageText = "Service has been updated successfully"
           } else {
             // Document does not exist, create a new one
             await setDoc(docRef, {
               content: json, // Store the text data
               timestamp: new Date() // Optional: Store the current timestamp
             });
-            alert('Text stored successfully');
+            this.messageText = "Service has been created successfully"
+            this.infoVisible = false;
           }
-        }
 
+        }
+        this.infoVisible = false
+        setTimeout(() => {
+          this.updatedMessage = false;
+        }, 2000);
         text.value = ''; // Clear the input field
+
       } catch (e) {
         console.error('Error adding or updating document: ', e);
       }
@@ -492,3 +552,26 @@ export default {
   }
 }
 </script>
+<style scoped>
+.form-group{
+  margin: 6px 0px;
+}
+.form-info-title{
+  margin-top: 0px;
+}
+.form-info-submit{
+  width: 100%;
+  margin-top: 6px;
+}
+.error{
+  color: red;
+  font-size: 10px;
+}
+.fixed{
+  position: fixed;
+  top:0;
+  width: 100%;
+  left: 0;
+  height: 50px;
+}
+</style>

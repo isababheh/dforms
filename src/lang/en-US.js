@@ -46,6 +46,7 @@ export default {
       validError: 'Form data validation failed'
     },
     actions: {
+      save: 'Save',
       import: 'Import JSON',
       clear: 'Clear',
       preview: 'Preview',
