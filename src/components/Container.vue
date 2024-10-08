@@ -393,7 +393,11 @@ export default {
       })
     },
     handleSave(event) {
-      event.preventDefault()
+      event.preventDefault();
+      console.log(this.widgetForm);
+      this.ServiceName=this.widgetForm.config.serviceName;
+      this.ServiceDescription=this.widgetForm.config.serviceDescription;
+      
       this.infoVisible = true;
       return;
 

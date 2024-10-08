@@ -2,18 +2,20 @@
   <div>
     <el-container>
       <el-main>
-        <div style="max-width: 800px; margin: auto; margin-bottom: 20px;">
-          <div>Service: {{ jsonData.config.serviceName }}</div>
-          <div style="font-size: 12px; margin-top:6px">{{ jsonData.config.serviceDescription }}</div>
-        </div>
+
 
         <div class="form-prev">
+          <div style="max-width: 800px; margin: auto; margin-bottom: 40px;">
+            <div>Service: {{ jsonData.config.serviceName }}</div>
+            <div style="font-size: 12px; margin-top:6px">{{ jsonData.config.serviceDescription }}</div>
+
+            <div class="hr"></div>
+          </div>
+
+
           <!-- Step progress bar -->
           <el-steps v-if="showStepsComponents" :active="currentStep - 1" finish-status="success">
-            <el-step
-              v-for="(step, index) in stepsLength"
-              :key="index"
-              :title="'Step ' + (index + 1)"
+            <el-step v-for="(step, index) in stepsLength" :key="index" :title="'Step ' + (index + 1)"
               :description="step.description || ''">
             </el-step>
           </el-steps>
@@ -21,8 +23,9 @@
           </generate-form>
 
           <div v-if="showStepsComponents">
-            <el-button type="button" size="medium"  @click="handleBack($event)">Back</el-button>
-          <el-button type="button" size="medium"  @click="handleNext($event)">{{currentStep == stepsLength ? 'Submit':'Next'}}</el-button>
+            <el-button type="button" size="medium" @click="handleBack($event)">Back</el-button>
+            <el-button type="button" size="medium" @click="handleNext($event)">{{ currentStep == stepsLength ?
+              'Submit' : 'Next' }}</el-button>
           </div>
 
         </div>
@@ -40,8 +43,8 @@ export default {
   data() {
     return {
       currentStep: 1,
-      stepsLength:0,
-      showStepsComponents:false,
+      stepsLength: 0,
+      showStepsComponents: false,
       jsonData: {
         list: [],
         config: {
@@ -62,15 +65,15 @@ export default {
     GenerateForm,
   },
   methods: {
-    handleNext(){
+    handleNext() {
       this.currentStep = this.currentStep + 1;
-      if(this.currentStep == this.stepsLength+1){
+      if (this.currentStep == this.stepsLength + 1) {
         alert('Submitted')
         window.location.href = "/"
       }
     },
-    handleBack(){
-      if(this.currentStep == 1){
+    handleBack() {
+      if (this.currentStep == 1) {
         return
       }
       this.currentStep = this.currentStep - 1;
@@ -92,11 +95,11 @@ export default {
         console.log('Document data:', docSnap.data().content);
         try {
           this.jsonData = JSON.parse(docSnap.data().content);
-          console.log("this.jsonData",this.jsonData)
+          console.log("this.jsonData", this.jsonData)
           this.stepsLength = this.jsonData.list.length;
 
           // Check if stepNumber key exists in any options
-             if (this.hasStepNumber()) {
+          if (this.hasStepNumber()) {
             this.showStepsComponents = true;
           } else {
             this.showStepsComponents = false;
@@ -160,11 +163,39 @@ export default {
 }
 
 .el-color-picker__trigger {
-  border-color: #209a93!important;
+  border-color: #209a93 !important;
 }
 
 .form-prev .el-select,
 .form-prev .el-date-editor.el-input {
   width: 100%;
+}
+
+/* .el-step__icon{
+background:#209a93!important;
+} */
+.el-steps--horizontal {
+  margin-bottom: 40px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.el-step__head.is-process {
+  color: #209a93 !important;
+  border-color: #209a93 !important;
+}
+
+.el-step__title {
+  font-size: 12px !important;
+  line-height: 22px !important;
+}
+
+.el-step__title.is-process {
+  color: #209a93 !important;
+}
+.hr{
+  height: 2px;
+  background-color: #209a93;
+  margin-top:10px;
 }
 </style>

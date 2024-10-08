@@ -2,25 +2,30 @@
   <div class="common-layout">
     <el-container>
       <el-main>
+       <div class="extraMargin">
         <div style="margin-bottom: 20px">Number of services: {{ tableData.length }}</div>
         <el-row :gutter="20">
           <el-col :span="8" class="my-col" v-if="previewVisible" v-for="form in tableData" :key="form.id"
             :data="JSON.parse(form.content)">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <div style="font-weight: bold;">{{ JSON.parse(form.content).config.serviceName }}</div>
-                <span style="font-size: 12px; color: #ccc;">({{ form.id }})</span>
+                <div class="card-title">{{ JSON.parse(form.content).config.serviceName }}</div>
+                <span style="font-size: 12px; color: #ccc;">( {{ form.id }} )</span>
 
               </div>
               <div class="text item">
-                <div style="margin-bottom: 10px;">{{ JSON.parse(form.content).config.serviceDescription }}</div>
-                <el-button link type="primary" size="small" @click="handleClick(form.id)">
+                <div class="card-desctiption">{{ JSON.parse(form.content).config.serviceDescription }}</div>
+                <el-button link type="primary" size="medium" @click="handleClick(form.id)">
                   Start service
+                </el-button>
+                <el-button link class="btn-secondary" type="default" size="medium" @click="handleClick(form.id)">
+                  Service details
                 </el-button>
               </div>
             </el-card>
           </el-col>
         </el-row>
+       </div>
       </el-main>
     </el-container>
   </div>
@@ -111,11 +116,30 @@ export default {
 };
 </script>
 <style scoped>
+.extraMargin{
+  margin-right: 60px;
+  margin-left: 60px;
+}
+.el-card{
+  height: 210px;
+}
+
+.card-title{
+  font-weight: 600;
+  height: 36px;
+  overflow: hidden;
+}
+.card-desctiption{
+  margin-bottom: 10px;
+  height: 36px;
+  overflow: hidden;
+}
 .my-col {
   margin-bottom: 20px;
 }
 
 .el-button--primary {
+  transition: .3s;
   background-color: #209a93;
   border-color: #209a93;
 }
@@ -124,5 +148,14 @@ export default {
 .el-button--primary:hover {
   background: #1c827d;
   border-color: #209a93;
+}
+.btn-secondary{
+  transition: .3s;
+  background-color: #615768;
+  color:#fff;
+}
+.btn-secondary:hover{
+  background-color: #453d4b;
+  color:#fff;
 }
 </style>
