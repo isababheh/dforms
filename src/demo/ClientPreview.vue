@@ -21,33 +21,38 @@
           </el-steps>
           <generate-form v-if="jsonData && isSubmitted" :data="jsonData" :currentStep="currentStep" ref="generateForm">
           </generate-form>
-          <div v-if="(showOutput && currentStep == stepsLength+1 && showStepsComponents) || (showOutput  && !showStepsComponents)">
-              <h1>Form data</h1>
-                <ul>
-                  <li v-for="(value, key) in outputData" :key="key">
-                    <span>{{ key }}:</span>
-                      <span v-if="Array.isArray(value)">
-                          <ul>
-                              <li v-for="(item, index) in value" :key="index">{{ item }}</li>
-                          </ul>
-                      </span>
-                      <span v-else-if="isImage(value)">
-                          <div>
-                              <strong>Image Object:</strong>
-                              <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;"/>
-                          </div>
-                      </span>
-                      <span v-else>{{ value }}</span>
-                  </li>
-          </ul>
+          <div
+            v-if="(showOutput && currentStep == stepsLength + 1 && showStepsComponents) || (showOutput && !showStepsComponents)">
+            <h1>Form data</h1>
+            <ul>
+              <li v-for="(value, key) in outputData" :key="key">
+                <span>{{ key }}:</span>
+                <span v-if="Array.isArray(value)">
+                  <ul>
+                    <li v-for="(item, index) in value" :key="index">{{ item }}</li>
+                  </ul>
+                </span>
+                <span v-else-if="isImage(value)">
+                  <div>
+                    <strong>Image Object:</strong>
+                    <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;" />
+                  </div>
+                </span>
+                <span v-else>{{ value }}</span>
+              </li>
+            </ul>
           </div>
           <div v-if="showStepsComponents" class="text-right">
-            <el-button type="button" size="medium" @click="handleBack($event)" v-if="currentStep !=1 ">Back</el-button>
-            <el-button type="button" size="medium" @click="handleNext($event)" v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ? 'Review' : 'Next' }}</el-button>
-            <el-button type="button" size="medium" @click="alert('data sent!')" v-if=" currentStep > stepsLength">{{ currentStep > stepsLength ? 'Submit' : '' }}</el-button>
+            <el-button type="button" size="medium" @click="handleBack($event)" v-if="currentStep != 1">Back</el-button>
+            <el-button type="button" size="medium" @click="handleNext($event)"
+              v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ? 'Review' :
+                'Next' }}</el-button>
+            <el-button type="button" size="medium" @click="handleSubmitSteps" v-if="currentStep > stepsLength">{{
+              currentStep > stepsLength ? 'Submit' : '' }}</el-button>
           </div>
           <div v-if="!showStepsComponents">
-            <el-button type="button" size="medium" @click="handleSubmit($event)"  v-if="!showOutput">Submit</el-button>
+            <el-button type="button" size="medium" @click="handleSubmitNoSteps($event)"
+              v-if="!showOutput">Submit</el-button>
           </div>
 
         </div>
@@ -73,9 +78,9 @@ export default {
       spinnerVisible: false,
       currentStep: 1,
       stepsLength: 0,
-      showOutput:false,
-      isSubmitted:true,
-      outputData:{},
+      showOutput: false,
+      isSubmitted: true,
+      outputData: {},
       showStepsComponents: false,
       jsonData: {
         list: [],
@@ -98,16 +103,18 @@ export default {
   },
   methods: {
     isImage(value) {
-        return typeof value === 'object' && value !== null && value.url && value.url.startsWith('data:image');
+      return typeof value === 'object' && value !== null && value.url && value.url.startsWith('data:image');
     },
-    handleSubmit(){
-      alert()
+    handleSubmitNoSteps() {
       this.showOutput = true;
       this.isSubmitted = false;
       this.$refs.generateForm.getData().then(data => {
-          this.outputData = data;
+        this.outputData = data;
       }).catch(e => {
       })
+    },
+    handleSubmitSteps() {
+      alert('Submitted successfully')
     },
     handleNext() {
       this.currentStep = this.currentStep + 1;
@@ -115,8 +122,8 @@ export default {
         this.showOutput = true
         this.$refs.generateForm.getData().then(data => {
           this.outputData = data;
-      }).catch(e => {
-      })
+        }).catch(e => {
+        })
       }
     },
     handleBack() {
@@ -247,7 +254,8 @@ background:#209a93!important;
   background-color: #209a93;
   margin-top: 10px;
 }
-.text-right{
+
+.text-right {
   text-align: right;
 }
 </style>
