@@ -3,7 +3,8 @@
     <el-container>
       <el-main>
         <div style="width: 100%; text-align: right;">
-          <el-button link type="primary" style="margin-left: auto; margin-bottom: 20px;" size="large" @click="handleCreateForm">
+          <el-button link type="primary" style="margin-left: auto; margin-bottom: 20px;" size="large"
+            @click="handleCreateForm">
             Create form
           </el-button>
         </div>
@@ -28,6 +29,13 @@
         </el-table>
       </el-main>
     </el-container>
+
+    <div class="spinner" v-if="spinnerVisible">
+      <img src="@/assets/spinner.png" width="20" height="20" class="rotate">
+      <div style="font-size: 12px;">Loading ...</div>
+    </div>
+
+
   </div>
 </template>
 
@@ -38,7 +46,7 @@ export default {
   data() {
     return {
       tableData: [],
-      loading: false,
+      spinnerVisible: false,
     };
   },
   created() {
@@ -47,6 +55,7 @@ export default {
   methods: {
     async fetchTableData() {
       try {
+        this.spinnerVisible = true;
         const collections = ['texts'];
         let allData = [];
 
@@ -63,7 +72,7 @@ export default {
         this.tableData = allData
           .filter(item => item.timestamp) // Ensure timestamp exists
           .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds); // Sort in descending order
-
+          this.spinnerVisible = false;
         console.log(allData);
       } catch (error) {
         console.error('Error fetching data from Firestore: ', error);
@@ -101,7 +110,7 @@ export default {
     async handleDelete(id) {
       const confirmDelete = confirm('Are you sure you want to delete this item?');
       if (confirmDelete) {
-        this.loading = true;
+        this.spinnerVisible = true;
         try {
           const docRef = doc(db, 'texts', id);
           console.log(`Attempting to delete document with ID: ${id}`);
@@ -112,7 +121,7 @@ export default {
           console.error('Error deleting document: ', error);
           alert('Failed to delete document. Please try again.');
         } finally {
-          this.loading = false;
+          this.spinnerVisible = false;
         }
       }
     },

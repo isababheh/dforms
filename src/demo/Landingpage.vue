@@ -1,7 +1,22 @@
 <template>
   <div class="containera">
+    <div class="container-header">
+      <div class="services-filter">
+        <div>All</div>
+        <div>General Services</div>
+        <div>Teacher Services</div>
+        <div>Parent Services</div>
+        <div> Services</div>
+      </div>
 
+      <div class="services-search">
+        <input type="text" placeholder="Search..." />
+      </div>
+    </div>
     <div class="cards-container">
+
+
+
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>{{ $t('global.adminPage') }}</span>
@@ -26,7 +41,7 @@
         <el-button link type="primary" size="medium" @click="handleClick('client')">
           Preview/Use the services
         </el-button>
-        <el-button link class="btn-secondary" type="default" size="medium"  @click="helpDialogVisible = true">
+        <el-button link class="btn-secondary" type="default" size="medium" @click="helpDialogVisible = true">
           Get help
         </el-button>
 
@@ -36,7 +51,9 @@
 
     <cus-dialog :visible="helpDialogVisible" @on-close="helpDialogVisible = false" width="500px" form :action="false">
       <h1 class="form-info-title">Service Information</h1>
-      <p>This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a certian sercvice </p>
+      <p>This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a certian
+        sercvice This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a
+        certian sercvice </p>
     </cus-dialog>
   </div>
 </template>
@@ -85,7 +102,7 @@ export default {
   gap: 20px;
 }
 
-.box-card {
+/* .box-card {
   width: 400px;
-}
+} */
 </style>

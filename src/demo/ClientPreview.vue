@@ -29,6 +29,12 @@
           </div>
 
         </div>
+
+
+        <div class="spinner" v-if="spinnerVisible">
+          <img src="@/assets/spinner.png" width="20" height="20" class="rotate">
+          <div style="font-size: 12px;">Loading ...</div>
+        </div>
       </el-main>
     </el-container>
 
@@ -42,6 +48,7 @@ import GenerateForm from '../components/GenerateForm.vue';
 export default {
   data() {
     return {
+      spinnerVisible: false,
       currentStep: 1,
       stepsLength: 0,
       showStepsComponents: false,
@@ -85,6 +92,7 @@ export default {
   },
   async mounted() {
     try {
+      this.spinnerVisible = true;
       let id = this.$route.query.id
       console.log("id", id)
       const docRef = doc(db, 'texts', id);  // Specify the collection name and document ID
@@ -109,7 +117,7 @@ export default {
           this.$message.error(e.message)
           this.$refs.uploadJson.end()
         }
-
+        this.spinnerVisible = false;
       } else {
         console.log('No such document!');
       }
@@ -193,9 +201,10 @@ background:#209a93!important;
 .el-step__title.is-process {
   color: #209a93 !important;
 }
-.hr{
+
+.hr {
   height: 2px;
   background-color: #209a93;
-  margin-top:10px;
+  margin-top: 10px;
 }
 </style>

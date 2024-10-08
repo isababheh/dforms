@@ -32,7 +32,7 @@
                   <el-button link type="primary" size="medium" @click="handleClick(form.id)">
                     Start service
                   </el-button>
-                  <el-button link class="btn-secondary" type="default" size="medium" @click="helpDialogVisible=true">
+                  <el-button link class="btn-secondary" type="default" size="medium" @click="helpDialogVisible = true">
                     Service details
                   </el-button>
                 </div>
@@ -49,6 +49,11 @@
         sercvice This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a
         certian sercvice </p>
     </cus-dialog>
+
+    <div class="spinner" v-if="spinnerVisible">
+      <img src="@/assets/spinner.png" width="20" height="20" class="rotate">
+      <div style="font-size: 12px;">Loading ...</div>
+    </div>
   </div>
 </template>
 
@@ -60,6 +65,7 @@ import CusDialog from '../components/CusDialog';
 export default {
   data() {
     return {
+      spinnerVisible: false,
       helpDialogVisible: false,
       tableData: [],
       loading: false,
@@ -85,6 +91,7 @@ export default {
   methods: {
     async fetchTableData() {
       try {
+        this.spinnerVisible = true;
         const collections = ['texts'];
         let allData = [];
 
@@ -102,6 +109,7 @@ export default {
           .filter(item => item.timestamp) // Ensure timestamp exists
           .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds); // Sort in descending order
 
+          this.spinnerVisible = false;
         console.log(allData);
       } catch (error) {
         console.error('Error fetching data from Firestore: ', error);
@@ -225,6 +233,36 @@ export default {
     padding: 15px;
     border: none;
     border-radius: 5px;
+  }
+}
+
+.spinner {
+  display: flex;
+  position: fixed;
+  background-color: #ffffff59;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.rotate {
+  display: inline-block;
+  /* Ensure it behaves like an inline element */
+  animation: rotation 1.5s linear infinite;
+  /* Adjust duration as needed */
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>
