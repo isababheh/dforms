@@ -23,31 +23,34 @@
           </generate-form>
           <div
             v-if="(showOutput && currentStep == stepsLength + 1 && showStepsComponents) || (showOutput && !showStepsComponents)">
-            <h1>Form data</h1>
-            <ul>
-              <li v-for="(value, key) in outputData" :key="key">
-                <span>{{ key }}:</span>
-                <span v-if="Array.isArray(value)">
+            <h1>Please review before submitting:</h1>
+
+            <div v-for="(value, key) in outputData" :key="key" style="margin-bottom: 20px;">
+
+              <!-- <span v-if="Array.isArray(value)">
                   <ul>
                     <li v-for="(item, index) in value" :key="index">{{ item }}</li>
                   </ul>
-                </span>
-                <span v-else-if="isImage(value)">
-                  <div>
-                    <strong>Image Object:</strong>
-                    <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;" />
-                  </div>
-                </span>
-                <span v-else>{{ value }}</span>
-              </li>
-            </ul>
+                </span> -->
+              <span v-if="isImage(value)">
+                <div style="display: flex;">
+                  <span class="previewTitle">{{ key }}: </span>
+                  <img :src="value[0].url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;" />
+                </div>
+              </span>
+              <span v-else>
+                <span class="previewTitle">{{ key }}: </span>
+                {{ value }}
+              </span>
+            </div>
+
           </div>
           <div v-if="showStepsComponents" class="text-right">
-            <el-button type="button" size="medium" @click="handleBack($event)" v-if="currentStep != 1">Back</el-button>
-            <el-button type="button" size="medium" @click="handleNext($event)"
+            <el-button type="secondary" class="btn-secondary" size="medium" @click="handleBack($event)" v-if="currentStep != 1">Back</el-button>
+            <el-button  type="primary" size="medium" @click="handleNext($event)"
               v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ? 'Review' :
                 'Next' }}</el-button>
-            <el-button type="button" size="medium" @click="handleSubmitSteps" v-if="currentStep > stepsLength">{{
+            <el-button type="primary" size="medium" @click="handleSubmitSteps" v-if="currentStep > stepsLength">{{
               currentStep > stepsLength ? 'Submit' : '' }}</el-button>
           </div>
           <div v-if="!showStepsComponents">
@@ -103,6 +106,8 @@ export default {
   },
   methods: {
     isImage(value) {
+      if (value[0]) value = value[0];
+      console.log('image', value.url);
       return typeof value === 'object' && value !== null && value.url && value.url.startsWith('data:image');
     },
     handleSubmitNoSteps() {
@@ -257,5 +262,12 @@ background:#209a93!important;
 
 .text-right {
   text-align: right;
+}
+
+.previewTitle {
+  width: 200px;
+  display: inline-block;
+  overflow: hidden;
+  font-weight: bold;
 }
 </style>
