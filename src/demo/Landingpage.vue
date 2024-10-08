@@ -1,24 +1,35 @@
 <template>
   <div class="containera">
+
     <div class="cards-container">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>{{ $t('global.adminPage') }}</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('admin')">{{ $t('global.goToAdmin') }}
-            page</el-button>
         </div>
-        <div class="text item">
-          Create the form and set the form elements
+        <div class="text item" style="margin-bottom: 20px;">
+          In this module you can create the form wizard and set the form elements
         </div>
+        <el-button link type="primary" size="medium" @click="handleClick('admin')">
+          Create the services
+        </el-button>
+        <el-button link class="btn-secondary" type="default" size="medium">
+          Get help
+        </el-button>
       </el-card>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>{{ $t('global.adminPage') }}</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('client')">{{ $t('global.goToClient') }}</el-button>
         </div>
-        <div class="text item">
-          View the form elements and navigate as a user
+        <div class="text item" style="margin-bottom: 20px;">
+          In this module you can view the services and start using them as a user
         </div>
+        <el-button link type="primary" size="medium" @click="handleClick('client')">
+          Preview/Use the services
+        </el-button>
+        <el-button link class="btn-secondary" type="default" size="medium">
+          Get help
+        </el-button>
+
       </el-card>
     </div>
   </div>
@@ -56,8 +67,13 @@ export default {
   margin-top: 40px;
   max-width: 900px;
 }
-.cards-container{
+
+.cards-container {
   display: flex;
   gap: 20px;
+}
+
+.box-card {
+  width: 400px;
 }
 </style>

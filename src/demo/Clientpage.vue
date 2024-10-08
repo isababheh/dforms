@@ -2,30 +2,44 @@
   <div class="common-layout">
     <el-container>
       <el-main>
-       <div class="extraMargin">
-        <div style="margin-bottom: 20px">Number of services: {{ tableData.length }}</div>
-        <el-row :gutter="20">
-          <el-col :span="8" class="my-col" v-if="previewVisible" v-for="form in tableData" :key="form.id"
-            :data="JSON.parse(form.content)">
-            <el-card class="box-card">
-              <div slot="header" class="clearfix">
-                <div class="card-title">{{ JSON.parse(form.content).config.serviceName }}</div>
-                <span style="font-size: 12px; color: #ccc;">( {{ form.id }} )</span>
+        <div class="extraMargin">
+          <div class="container-header">
+            <div class="services-filter">
+              <div>All</div>
+              <div>General Services</div>
+              <div>Teacher Services</div>
+              <div>Parent Services</div>
+              <div> Services</div>
+            </div>
 
-              </div>
-              <div class="text item">
-                <div class="card-desctiption">{{ JSON.parse(form.content).config.serviceDescription }}</div>
-                <el-button link type="primary" size="medium" @click="handleClick(form.id)">
-                  Start service
-                </el-button>
-                <el-button link class="btn-secondary" type="default" size="medium" @click="handleClick(form.id)">
-                  Service details
-                </el-button>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
-       </div>
+            <div class="services-search">
+              <input type="text" placeholder="Search..." />
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px">Number of services: {{ tableData.length }}</div>
+          <el-row :gutter="20">
+            <el-col :span="8" class="my-col" v-if="previewVisible" v-for="form in tableData" :key="form.id"
+              :data="JSON.parse(form.content)">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <div class="card-title">{{ JSON.parse(form.content).config.serviceName }}</div>
+                  <span style="font-size: 12px; color: #ccc;">( {{ form.id }} )</span>
+
+                </div>
+                <div class="text item">
+                  <div class="card-desctiption">{{ JSON.parse(form.content).config.serviceDescription }}</div>
+                  <el-button link type="primary" size="medium" @click="handleClick(form.id)">
+                    Start service
+                  </el-button>
+                  <el-button link class="btn-secondary" type="default" size="medium" @click="handleClick(form.id)">
+                    Service details
+                  </el-button>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
       </el-main>
     </el-container>
   </div>
@@ -116,46 +130,91 @@ export default {
 };
 </script>
 <style scoped>
-.extraMargin{
+.extraMargin {
   margin-right: 60px;
   margin-left: 60px;
 }
-.el-card{
+
+.el-card {
   height: 210px;
 }
 
-.card-title{
+.card-title {
   font-weight: 600;
   height: 36px;
   overflow: hidden;
 }
-.card-desctiption{
+
+.card-desctiption {
   margin-bottom: 10px;
   height: 36px;
   overflow: hidden;
 }
+
 .my-col {
   margin-bottom: 20px;
 }
+</style>
 
+<style>
 .el-button--primary {
   transition: .3s;
-  background-color: #209a93;
-  border-color: #209a93;
+  background-color: #209a93 !important;
+  border-color: #209a93 !important;
 }
 
 .el-button--primary:focus,
 .el-button--primary:hover {
-  background: #1c827d;
-  border-color: #209a93;
+  background: #1c827d !important;
+  border-color: #209a93 !important;
 }
-.btn-secondary{
+
+.btn-secondary {
   transition: .3s;
-  background-color: #615768;
-  color:#fff;
+  background-color: #615768 !important;
+  color: #fff !important;
 }
-.btn-secondary:hover{
-  background-color: #453d4b;
-  color:#fff;
+
+.btn-secondary:hover {
+  background-color: #453d4b !important;
+  color: #fff !important;
+}
+</style>
+
+<style lang="scss">
+.container-header {
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.services-filter {
+  display: flex;
+  background-color: #209a93;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  gap: 20px;
+  margin-bottom: 10px;
+
+  div {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.services-search {
+  background-color: #615767;
+  padding: 25px;
+  border-radius: 4px;
+
+  input {
+    width: 100%;
+    padding: 15px;
+    border:none;
+    border-radius: 5px;
+  }
 }
 </style>
