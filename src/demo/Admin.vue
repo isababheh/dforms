@@ -10,7 +10,11 @@
         </div>
         <el-table :data="tableData" style="width: 100%; margin: auto;">
           <el-table-column prop="id" label="ID" width="auto" />
-          <el-table-column prop="ServiceName" label="Service name" width="auto" />
+          <el-table-column label="Service name" width="auto">
+        <template slot-scope="{ row }">
+          {{ getServiceName(row.content) }}
+        </template>
+      </el-table-column>
           <el-table-column label="Timestamp" width="400">
             <template slot-scope="{ row }">
               {{ formatTimestamp(row.timestamp) }} <!-- Use timestamp for formatting -->
@@ -53,6 +57,15 @@ export default {
     this.fetchTableData();
   },
   methods: {
+    getServiceName(content) {
+      try {
+        const parsedContent = JSON.parse(content);
+        return parsedContent.config.serviceName || 'N/A'; // Return the service name or 'N/A' if not found
+      } catch (error) {
+        console.error('Error parsing content:', error);
+        return 'N/A';
+      }
+    },
     async fetchTableData() {
       try {
         this.spinnerVisible = true;
@@ -73,7 +86,6 @@ export default {
           .filter(item => item.timestamp) // Ensure timestamp exists
           .sort((a, b) => b.timestamp.seconds - a.timestamp.seconds); // Sort in descending order
           this.spinnerVisible = false;
-        console.log(allData);
       } catch (error) {
         console.error('Error fetching data from Firestore: ', error);
       }
