@@ -3,12 +3,13 @@
     <el-container>
       <el-main>
         <div style="width: 100%; text-align: right;">
-          <el-button link type="default" style="margin-left: auto; margin-bottom: 20px;" size="large" @click="handleCreateForm">
+          <el-button link type="primary" style="margin-left: auto; margin-bottom: 20px;" size="large" @click="handleCreateForm">
             Create form
           </el-button>
         </div>
         <el-table :data="tableData" style="width: 100%; margin: auto;">
           <el-table-column prop="id" label="ID" width="auto" />
+          <el-table-column prop="ServiceName" label="Service name" width="auto" />
           <el-table-column label="Timestamp" width="400">
             <template slot-scope="{ row }">
               {{ formatTimestamp(row.timestamp) }} <!-- Use timestamp for formatting -->
