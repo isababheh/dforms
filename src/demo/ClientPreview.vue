@@ -19,13 +19,34 @@
               :description="step.description || ''">
             </el-step>
           </el-steps>
-          <generate-form v-if="jsonData" :data="jsonData" :currentStep="currentStep" ref="generateForm">
+          <generate-form v-if="jsonData && isSubmitted" :data="jsonData" :currentStep="currentStep" ref="generateForm">
           </generate-form>
-
-          <div v-if="showStepsComponents">
-            <el-button type="button" size="medium" @click="handleBack($event)">Back</el-button>
-            <el-button type="button" size="medium" @click="handleNext($event)">{{ currentStep == stepsLength ?
+          <div v-if="(showOutput && currentStep == stepsLength+1 && showStepsComponents) || (showOutput  && !showStepsComponents)">
+              <h1>Form data</h1>
+                    <ul>
+              <li v-for="(value, key) in outputData" :key="key">
+                  <span v-if="Array.isArray(value)">
+                      <ul>
+                          <li v-for="(item, index) in value" :key="index">{{ item }}</li>
+                      </ul>
+                  </span>
+                  <span v-else-if="isImage(value)">
+                      <div>
+                          <strong>Image Object:</strong>
+                          <img :src="value.url" alt="Uploaded Image" style="max-width: 200px; max-height: 200px;"/>
+                      </div>
+                  </span>
+                  <span v-else>{{ value }}</span>
+              </li>
+          </ul>
+          </div>
+          <div v-if="showStepsComponents" class="text-right">
+            <el-button type="button" size="medium" @click="handleBack($event)" v-if="currentStep !=1 ">Back</el-button>
+            <el-button type="button" size="medium" @click="handleNext($event)" v-if="currentStep == stepsLength || currentStep < stepsLength">{{ currentStep == stepsLength ?
               'Submit' : 'Next' }}</el-button>
+          </div>
+          <div v-if="!showStepsComponents">
+            <el-button type="button" size="medium" @click="handleSubmit($event)"  v-if="!showOutput">Submit</el-button>
           </div>
 
         </div>
@@ -44,6 +65,9 @@ export default {
     return {
       currentStep: 1,
       stepsLength: 0,
+      showOutput:false,
+      isSubmitted:true,
+      outputData:{},
       showStepsComponents: false,
       jsonData: {
         list: [],
@@ -65,11 +89,26 @@ export default {
     GenerateForm,
   },
   methods: {
+    isImage(value) {
+        return typeof value === 'object' && value !== null && value.url && value.url.startsWith('data:image');
+    },
+    handleSubmit(){
+      alert()
+      this.showOutput = true;
+      this.isSubmitted = false;
+      this.$refs.generateForm.getData().then(data => {
+          this.outputData = data;
+      }).catch(e => {
+      })
+    },
     handleNext() {
       this.currentStep = this.currentStep + 1;
       if (this.currentStep == this.stepsLength + 1) {
-        alert('Submitted')
-        window.location.href = "/"
+        this.showOutput = true
+        this.$refs.generateForm.getData().then(data => {
+          this.outputData = data;
+      }).catch(e => {
+      })
       }
     },
     handleBack() {
@@ -197,5 +236,8 @@ background:#209a93!important;
   height: 2px;
   background-color: #209a93;
   margin-top:10px;
+}
+.text-right{
+  text-align: right;
 }
 </style>
