@@ -185,5 +185,9 @@ export default {
       edit: '替换',
       delete: '删除'
     }
+  },
+  global:{
+    adminPage:"Admin Page",
+    goToClient:"Go to Client page"
   }
 }

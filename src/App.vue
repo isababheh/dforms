@@ -4,8 +4,18 @@
       <div class="fm-title" @click="handleHome">Home</div>
 
       <div class="fm-link">
-        <!-- Conditionally render the button based on the computed property -->
-      
+        <div class="action-item">
+          <el-dropdown @command="handleLangCommand">
+            <span class="el-dropdown-link">
+              Language <i class="el-icon-arrow-down"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="en-US">English</el-dropdown-item>
+              <el-dropdown-item command="zh-CN">中文</el-dropdown-item>
+              <el-dropdown-item command="ar-JO">العربية</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
     </div>
     <div class="fm-container"><router-view /></div>
@@ -14,6 +24,11 @@
 
 <script>
 import Vue from 'vue'
+import { Dropdown, DropdownMenu, DropdownItem } from 'element-ui';
+
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
 
 export default {
   name: 'app',
@@ -21,10 +36,7 @@ export default {
   methods: {
     handleHome() {
       const lang = this.$route.params.lang || 'en-US';
-      this.$router.push({ path: `/${lang}/`});
-
-      
-      //window.location.href = window.location.href.split('/create-form')[0];
+      this.$router.push({ path: `/${lang}/` });
     },
 
     handleCreateForm() {
@@ -32,7 +44,9 @@ export default {
     },
 
     handleLangCommand(command) {
-      this.$router.replace({ name: this.$route.name, params: { lang: command } })
+      this.$router.replace({ name: this.$route.name, params: { lang: command } });
+      
+     window.location.reload();
     }
   }
 }
@@ -45,11 +59,8 @@ export default {
   padding: 0 10px;
   background-image: linear-gradient(to right, #1278f6, #00b4aa);
   position: relative;
-
-  .fm-logo {
-    height: 26px;
-    vertical-align: middle;
-  }
+  display: flex;
+  justify-content: space-between;
 
   .fm-title {
     display: inline-block;
@@ -67,31 +78,9 @@ export default {
     height: 50px;
     float: right;
 
-    a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 50px;
-      font-weight: 500;
-      margin-left: 15px;
-
-      &:hover {
-        opacity: 0.8;
-      }
-
-      &.ad {
-        color: #f5dab1;
-      }
-    }
-
     .action-item {
       display: inline-block;
       margin-left: 15px;
-
-      .el-dropdown {
-        // font-size: 16px;
-        // font-weight: 500;
-      }
 
       .el-dropdown-link {
         cursor: pointer;
@@ -99,12 +88,6 @@ export default {
 
         &:hover {
           opacity: 0.8;
-        }
-      }
-
-      &.action-item-user {
-        .el-dropdown-link {
-          color: #f5dab1;
         }
       }
     }
@@ -118,8 +101,6 @@ export default {
 *,
 :after,
 :before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -130,10 +111,11 @@ body {
 
 #app {
   font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100%;
   height: 100%;
+}
+.fm-link{
+  margin-top: 16px;
 }
 </style>

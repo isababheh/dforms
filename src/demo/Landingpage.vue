@@ -3,8 +3,8 @@
     <div class="cards-container">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>Admin Page</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('admin')">Go to Admin
+          <span>{{ $t('global.adminPage') }}</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('admin')">{{ $t('global.goToAdmin') }}
             page</el-button>
         </div>
         <div class="text item">
@@ -13,9 +13,8 @@
       </el-card>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>Admin Page</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('client')">Go to Client
-            page</el-button>
+          <span>{{ $t('global.adminPage') }}</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick('client')">{{ $t('global.goToClient') }}</el-button>
         </div>
         <div class="text item">
           View the form elements and navigate as a user

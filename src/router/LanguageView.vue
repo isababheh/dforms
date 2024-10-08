@@ -11,14 +11,22 @@ export default {
   },
   methods: {
     loadLanguage () {
-      if (this.$route.params.lang == 'zh-CN') {
+      if (this.$route.params.lang === 'zh-CN') {
         this.$i18n.locale = 'zh-CN'
         localStorage.setItem('language', 'zh-CN')
-      } else if (this.$route.params.lang == 'en-US') {
+      } else if (this.$route.params.lang === 'en-US') {
         this.$i18n.locale = 'en-US'
         localStorage.setItem('language', 'en-US')
+      } else if (this.$route.params.lang === 'ar-JO') { // Add support for Arabic
+        this.$i18n.locale = 'ar-JO'
+        localStorage.setItem('language', 'ar-JO')
       } else {
-        this.$router.replace({name: this.$route.name, params: {lang: navigator.language == 'zh-CN' ? 'zh-CN' : 'en-US'}})
+        this.$router.replace({
+          name: this.$route.name,
+          params: {
+            lang: navigator.language === 'zh-CN' ? 'zh-CN' : 'en-US'
+          }
+        })
       }
     }
   },

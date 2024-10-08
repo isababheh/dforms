@@ -4,6 +4,14 @@ $primary-background-color: #ecf5ff;
 body{
   background-color: #eeeded;
 }
+/* rtl.css */
+body.rtl {
+  direction: rtl;
+}
+
+body.rtl * {
+  text-align: right;
+}
 .fm-style{
   height: 100%;
 

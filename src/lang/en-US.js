@@ -187,5 +187,10 @@ export default {
       edit: 'replace',
       delete: 'delete'
     }
+  },
+  global:{
+    adminPage:"Admin Page",
+    goToClient:"Go to Client page",
+    goToAdmin:"Go to Admin page"
   }
 }
