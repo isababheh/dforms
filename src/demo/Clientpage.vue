@@ -32,7 +32,7 @@
                   <el-button link type="primary" size="medium" @click="handleClick(form.id)">
                     Start service
                   </el-button>
-                  <el-button link class="btn-secondary" type="default" size="medium" @click="handleClick(form.id)">
+                  <el-button link class="btn-secondary" type="default" size="medium" @click="helpDialogVisible=true">
                     Service details
                   </el-button>
                 </div>
@@ -42,16 +42,25 @@
         </div>
       </el-main>
     </el-container>
+
+    <cus-dialog :visible="helpDialogVisible" @on-close="helpDialogVisible = false" width="500px" form :action="false">
+      <h1 class="form-info-title">Service Information</h1>
+      <p>This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a certian
+        sercvice This is a help dialog to show how to use a certian sercvice This is a help dialog to show how to use a
+        certian sercvice </p>
+    </cus-dialog>
   </div>
 </template>
 
 <script>
 import { db, collection, getDocs, doc, deleteDoc } from '../firebase';
 import GenerateForm from '../components/GenerateForm.vue';
+import CusDialog from '../components/CusDialog';
 
 export default {
   data() {
     return {
+      helpDialogVisible: false,
       tableData: [],
       loading: false,
       previewVisible: true,
@@ -68,6 +77,7 @@ export default {
   },
   components: {
     GenerateForm,
+    CusDialog,
   },
   created() {
     this.fetchTableData();
@@ -213,7 +223,7 @@ export default {
   input {
     width: 100%;
     padding: 15px;
-    border:none;
+    border: none;
     border-radius: 5px;
   }
 }

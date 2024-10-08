@@ -190,6 +190,7 @@ export default {
     },
     global: {
         adminPage: "صفحة الإدارة",
+        clientPage: "صفحة المستخدم",
         goToClient: "اذهب إلى صفحة العميل",
         goToAdmin:"اذهب إلى صفحة الإدارة"
       }

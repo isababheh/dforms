@@ -188,6 +188,7 @@ export default {
   },
   global:{
     adminPage:"Admin Page",
+    clientPage:"Client Page",
     goToClient:"Go to Client page"
   }
 }
