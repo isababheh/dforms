@@ -8,12 +8,12 @@
             :data="JSON.parse(form.content)">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span>{{ form.id }}</span>
-                <div>Submit a technical issue</div>
+                <div style="font-weight: bold;">{{ JSON.parse(form.content).config.serviceName }}</div>
+                <span style="font-size: 12px; color: #ccc;">({{ form.id }})</span>
 
               </div>
               <div class="text item">
-                <div style="margin-bottom: 10px;">View the form elements and navigate as a user</div>
+                <div style="margin-bottom: 10px;">{{ JSON.parse(form.content).config.serviceDescription }}</div>
                 <el-button link type="primary" size="small" @click="handleClick(form.id)">
                   Start service
                 </el-button>
@@ -113,5 +113,16 @@ export default {
 <style scoped>
 .my-col {
   margin-bottom: 20px;
+}
+
+.el-button--primary {
+  background-color: #209a93;
+  border-color: #209a93;
+}
+
+.el-button--primary:focus,
+.el-button--primary:hover {
+  background: #1c827d;
+  border-color: #209a93;
 }
 </style>
