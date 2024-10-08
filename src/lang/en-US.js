@@ -79,6 +79,7 @@ export default {
         customClass: 'Custom Class'
       },
       widget: {
+        stepNumber:'Step Number',
         title: 'Component Attribute',
         model: 'ID',
         name: 'Name',

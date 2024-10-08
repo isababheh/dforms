@@ -1,31 +1,30 @@
 <template>
   <div class="fm-style">
-    <el-form ref="generateForm" 
+    <el-form ref="generateForm"
       label-suffix=":"
       :size="data.config.size"
-      :model="models" :rules="rules" :label-position="data.config.labelPosition" :label-width="data.config.labelWidth + 'px'">
-      <template v-for="item in data.list">
-
-        <template v-if="item.type == 'grid'">
+      :model="models"
+      :rules="rules"
+      :label-position="data.config.labelPosition"
+      :label-width="data.config.labelWidth + 'px'">
+      <template v-for="item in filteredData">
+        <template v-if="item.type === 'grid'">
           <el-row
             :key="item.key"
             type="flex"
             :gutter="item.options.gutter ? item.options.gutter : 0"
             :justify="item.options.justify"
-            :align="item.options.align"
-          >
+            :align="item.options.align">
             <el-col v-for="(col, colIndex) in item.columns" :key="colIndex" :span="col.span">
-              
-
-              <template v-for="citem in col.list" >
-                <el-form-item v-if="citem.type=='blank'" :label="citem.name" :prop="citem.model" :key="citem.key">
+              <template v-for="citem in col.list">
+                <el-form-item v-if="citem.type === 'blank'" :label="citem.name" :prop="citem.model" :key="citem.key">
                   <slot :name="citem.model" :model="models"></slot>
                 </el-form-item>
-                <genetate-form-item v-else 
-                  :key="citem.key" 
-                  :models.sync="models" 
-                  :remote="remote" 
-                  :rules="rules" 
+                <genetate-form-item v-else
+                  :key="citem.key"
+                  :models.sync="models"
+                  :remote="remote"
+                  :rules="rules"
                   :widget="citem"
                   :edit="edit"
                   @input-change="onInputChange">
@@ -35,24 +34,23 @@
           </el-row>
         </template>
 
-        <template v-else-if="item.type == 'blank'">
+        <template v-else-if="item.type === 'blank'">
           <el-form-item :label="item.name" :prop="item.model" :key="item.key">
             <slot :name="item.model" :model="models"></slot>
           </el-form-item>
         </template>
 
         <template v-else>
-          <genetate-form-item 
-            :key="item.key" 
-            :models.sync="models" 
-            :rules="rules" 
-            :widget="item" 
+          <genetate-form-item
+            :key="item.key"
+            :models.sync="models"
+            :rules="rules"
+            :widget="item"
             :edit="edit"
             @input-change="onInputChange"
             :remote="remote">
           </genetate-form-item>
         </template>
-        
       </template>
     </el-form>
   </div>
@@ -60,7 +58,7 @@
 
 <script>
 import GenetateFormItem from './GenerateFormItem'
-import {loadJs} from '../util/index.js'
+import { loadJs } from '../util/index.js'
 
 export default {
   name: 'fm-generate-form',
@@ -70,126 +68,87 @@ export default {
   props: {
     data: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     remote: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     value: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     edit: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+    currentStep: {
+      type: Number,
+      default: 1,
+    },
   },
-  data () {
+  data() {
     return {
       models: {},
-      rules: {}
-    }
+      rules: {},
+    };
   },
-  created () {
-    this.generateModle(this.data.list)
+  computed: {
+    filteredData() {
+      // Filter grids based on currentStep
+      return this.data.list.filter(item => 
+      !item.options || 
+      (item.options.stepNumber !== undefined && item.options.stepNumber === this.currentStep) ||
+      !item.options.stepNumber // Include if stepNumber does not exist
+    );
+    },
   },
-  mounted () {
+  created() {
+    this.generateModle(this.data.list);
   },
   methods: {
-    generateModle (genList) {
+    generateModle(genList) {
       for (let i = 0; i < genList.length; i++) {
         if (genList[i].type === 'grid') {
           genList[i].columns.forEach(item => {
-            this.generateModle(item.list)
-          })
+            this.generateModle(item.list);
+          });
         } else {
           if (this.value && Object.keys(this.value).indexOf(genList[i].model) >= 0) {
-            this.models[genList[i].model] = this.value[genList[i].model]
+            this.models[genList[i].model] = this.value[genList[i].model];
           } else {
             if (genList[i].type === 'blank') {
-              this.$set(this.models, genList[i].model, genList[i].options.defaultType === 'String' ? '' : (genList[i].options.defaultType === 'Object' ? {} : []))
+              this.$set(this.models, genList[i].model, genList[i].options.defaultType === 'String' ? '' : (genList[i].options.defaultType === 'Object' ? {} : []));
             } else {
-              this.models[genList[i].model] = genList[i].options.defaultValue
-            }      
+              this.models[genList[i].model] = genList[i].options.defaultValue;
+            }
           }
-          
+
           if (this.rules[genList[i].model]) {
-            
             this.rules[genList[i].model] = [...this.rules[genList[i].model], ...genList[i].rules.map(item => {
               if (item.pattern) {
-                return {...item, pattern: new RegExp(item.pattern)}
+                return { ...item, pattern: new RegExp(item.pattern) };
               } else {
-                return {...item}
+                return { ...item };
               }
-            })]
+            })];
           } else {
-            
             this.rules[genList[i].model] = [...genList[i].rules.map(item => {
               if (item.pattern) {
-                return {...item, pattern: new RegExp(item.pattern)}
+                return { ...item, pattern: new RegExp(item.pattern) };
               } else {
-                return {...item}
+                return { ...item };
               }
-            })]
-          }      
-        }
-      }
-    },
-    getData () {
-      return new Promise((resolve, reject) => {
-        this.$refs.generateForm.validate(valid => {
-          if (valid) {
-            resolve(this.models)
-          } else {
-            reject(new Error(this.$t('fm.message.validError')).message)
-          }
-        })
-      })
-    },
-    reset () {
-      this.$refs.generateForm.resetFields()
-    },
-    onInputChange (value, field) {
-      this.$emit('on-change', field, value, this.models)
-    },
-    disabled (fields, disabled) {
-      if (typeof fields === 'string') {
-        fields = [fields]
-      }
-      this._setDisabled(this.data.list, fields, disabled)
-    },
-    _setDisabled (genList, fields, disabled) {
-      for (let i = 0; i < genList.length; i++) {
-        if (genList[i].type === 'grid') {
-          genList[i].columns.forEach(item => {
-            this._setDisabled(item.list, fields, disabled)
-          })
-        } else {
-          if (fields.indexOf(genList[i].model) >= 0) {
-            
-            this.$set(genList[i].options, 'disabled', disabled)
+            })];
           }
         }
       }
+    },
+    onInputChange(value, field) {
+      this.$emit('on-change', field, value, this.models);
     },
   },
-  watch: {
-    data: {
-      deep: true,
-      handler (val) {
-        this.generateModle(val.list)
-      }
-    },
-    value: {
-      deep: true,
-      handler (val) {
-        console.log(JSON.stringify(val))
-        this.models = {...this.models, ...val}
-      }
-    }
-  }
-}
+};
 </script>
 
 <style lang="scss">

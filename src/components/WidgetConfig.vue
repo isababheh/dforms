@@ -272,6 +272,9 @@
         <el-form-item :label="$t('fm.config.widget.gutter')">
           <el-input type="number" v-model.number="data.options.gutter"></el-input>
         </el-form-item>
+        <el-form-item :label="$t('fm.config.widget.stepNumber')">
+          <el-input type="number" v-model.number="data.options.stepNumber"></el-input>
+        </el-form-item>
         <el-form-item :label="$t('fm.config.widget.columnOption')">
           <draggable tag="ul" :list="data.columns"
             v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
